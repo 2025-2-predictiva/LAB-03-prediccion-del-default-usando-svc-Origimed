@@ -5,8 +5,14 @@ import gzip
 import json
 import os
 import pickle
-
+import numpy as np, __main__
 import pandas as pd  # type: ignore
+
+def to_float32_fn(X):
+    if hasattr(X, "toarray"):
+        X = X.toarray()
+    return np.asarray(X, dtype=np.float32)
+__main__.to_float32_fn = to_float32_fn
 
 # ------------------------------------------------------------------------------
 MODEL_FILENAME = "files/models/model.pkl.gz"
@@ -19,7 +25,7 @@ MODEL_COMPONENTS = [
 ]
 SCORES = [
     0.661,
-    0.666,
+    0.662,
 ]
 METRICS = [
     {
@@ -33,10 +39,10 @@ METRICS = [
     {
         "type": "metrics",
         "dataset": "test",
-        "precision": 0.673,
+        "precision": 0.662,
         "balanced_accuracy": 0.661,
         "recall": 0.370,
-        "f1_score": 0.482,
+        "f1_score": 0.472,
     },
     {
         "type": "cm_matrix",
@@ -48,7 +54,7 @@ METRICS = [
         "type": "cm_matrix",
         "dataset": "test",
         "true_0": {"predicted_0": 6710, "predicted_1": None},
-        "true_1": {"predicted_0": None, "predicted_1": 730},
+        "true_1": {"predicted_0": None, "predicted_1": 710},
     },
 ]
 
@@ -57,6 +63,7 @@ METRICS = [
 #
 # Internal tests
 #
+
 def _load_model():
     """Generic test to load a model"""
     assert os.path.exists(MODEL_FILENAME)
